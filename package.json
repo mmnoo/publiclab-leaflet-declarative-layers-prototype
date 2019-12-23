@@ -1,0 +1,14 @@
+{
+  "name": "publiclab-leaflet-declarative-layers-prototype",
+  "version": "0.0.0",
+  "description": "A very basic prototype demonstrating how Public Lab's leaflet-environmental-layers library could use the leaflet-environmental-layers plugin",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Melissa Nunes",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "leaflet-declarative-layers": "^0.4.1"
+  }
+}

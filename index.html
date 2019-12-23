@@ -1,0 +1,51 @@
+<!doctype html>
+  <html>
+   <head>
+     <title>DEMO - Leaflet Dynamic Layers</title>
+     <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css">
+   </head>
+   <body>
+     <div id="map" style="height: 400px; width: 700px; border: solid thin gray;"></div>
+
+     <h3>Pretend these buttons are a legend of some sort:</h3>
+     
+     <button id="addGeoJson">Add GeoJSON layer</button> Click adds layer to map, and to layers references.
+     <script src="node_modules/leaflet/dist/leaflet-src.js"></script>
+    <script src="node_modules/leaflet-declarative-layers/dist/leafletDeclarativeLayers.js"></script>
+    <script>
+        const map = new L.Map('map', { zoom: 7, center: new L.LatLng(49.5, -115)});
+        const basemap = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');		
+        map.addLayer(basemap);  
+        (async () => {
+            const languageResponse = await fetch('https://native-land.ca/api/index.php?maps=languages');
+            const languageData =  await languageResponse.json();
+            const layerMetadata = [
+                {
+                    id: 'geoJsonLayer',
+                    label: 'GeoJSON Layer Example',
+                    data: languageData,
+                    generateFeaturePopupContent: (feature) => {
+                        return feature.properties.name;
+                    },
+                    options: {
+                        style: (feature) => {
+                            return {
+                                fill: true,
+                                fillColor: feature.properties.color,
+                                color: feature.properties.color
+                            }
+                        }
+                    }
+                }
+            ];
+       
+            const declaredLayers = new L.DeclarativeLayers(map);; 
+          
+            document.getElementById('addGeoJson').addEventListener('click', () => {
+                declaredLayers.addLayer(layerMetadata[0]);
+                console.log('Layer references: ', declaredLayers.getLayerReferences());
+            });
+        })(); 
+    </script>
+   </body>
+  </html>
